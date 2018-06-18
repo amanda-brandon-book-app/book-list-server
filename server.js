@@ -17,7 +17,7 @@ app.use(cors());
 // API endpoints
 app.get('/api/v1/test', (req, res) => {
     console.log('You\'re a wizard Harry');
-    res.send('Connected to server');
+    res.send('Connected to server - You\'re a wizard Harry');
 });
 
 app.get('*', (req, res) => res.status(404).send('This route does not exist'));
