@@ -1,0 +1,28 @@
+{
+  "name": "book-list-server",
+  "version": "0.1.0",
+  "description": "Book app project for Seattle301d35 week 3, June 2018",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amanda-brandon-book-app/book-list-server.git"
+  },
+  "keywords": [
+    "express",
+    "node"
+  ],
+  "author": "Brandon Fenty & Amanda Moen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amanda-brandon-book-app/book-list-server/issues"
+  },
+  "homepage": "https://github.com/amanda-brandon-book-app/book-list-server#readme",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "pg": "^7.4.3"
+  }
+}
