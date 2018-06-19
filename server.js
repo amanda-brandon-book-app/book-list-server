@@ -10,14 +10,24 @@ const app = express();
 const PORT = process.env.PORT;
 
 // Database setup
+// postgres://postgres:1986@localhost:5432/books_app'; - Linux
+// postgres://localhost:5432/books_app - Mac Env link
+const client = new pg.Client(process.env.DATABASE_URL);
+
+
+client.connect();
+client.on('error', err => console.log(err));
 
 // Application middleware
 app.use(cors());
 
 // API endpoints
-app.get('/api/v1/test', (req, res) => {
-    console.log('You\'re a wizard Harry');
-    res.send('Connected to server - You\'re a wizard Harry');
+app.get('/api/v1/books', (req, res) => {
+    console.log('New GET request');
+    let SQL = `SELECT * FROM books;`;
+    client.query(SQL)
+    .then(results => res.send(results.rows))
+    .catch(console.error);
 });
 
 app.get('*', (req, res) => res.status(404).send('This route does not exist'));
