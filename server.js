@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 // Database setup
-// postgres://postgres:1986@localhost:5432/books_app'; - Linux
+// postgres://amanda:1234@localhost:5432/books_app'; - Linux
 // postgres://localhost:5432/books_app - Mac Env link
 const client = new pg.Client(process.env.DATABASE_URL);
 
