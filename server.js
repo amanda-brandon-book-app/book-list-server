@@ -20,7 +20,9 @@ client.on('error', err => console.log(err));
 // Application middleware
 app.use(cors());
 
-// API endpoints
+// ============= API endpoints =============
+
+// Fetch all books
 app.get('/api/v1/books', (req, res) => {
     console.log('New GET request');
     let SQL = `SELECT * FROM books;`;
@@ -29,7 +31,7 @@ app.get('/api/v1/books', (req, res) => {
     .catch(console.error);
 });
 
-// Book GET w/o description
+// Fetch books w/o description (slim version)
 app.get('/api/v1/books-slim', (req, res) => {
     console.log('New slimmed GET request')
     let SQL = `
@@ -39,6 +41,19 @@ app.get('/api/v1/books-slim', (req, res) => {
     .then(results => res.send(results.rows))
     .catch(console.error);
 });
+
+// Fetch single book
+app.get('/api/v1/books/:id', (req, res) => {
+    console.log('New GET request for single object')
+    let SQL = `
+        SELECT * FROM books WHERE book_id=$1;
+        `;
+    let values = [request.body.book_id];
+    client.query(SQL, values)
+    .then()
+})
+
+// =========================================
 
 app.get('*', (req, res) => res.status(404).send('This route does not exist'));
 
