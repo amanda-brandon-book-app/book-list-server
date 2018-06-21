@@ -48,17 +48,32 @@ app.get('/api/v1/books-slim', (req, res) => {
 app.get('/api/v1/books/:id', (req, res) => {
     console.log('New GET request for single object')
     let SQL = `
-        SELECT * FROM books WHERE book_id=$1;
+        SELECT * FROM books WHERE book_id=${req.params.id};
         `;
-    let values = [request.body.book_id];
-    client.query(SQL, values)
+    client.query(SQL)
     .then(results => res.send(results.rows))
     .catch(console.error);
 });
 
 // ================ POSTS ==================
 
-
+app.post('/api/v1/books', function(req, res) {
+    client.query(
+        'INSERT INTO books(title, author, isbn, image_url, description)VALUES($2, $3, $4, $5, $6) WHERE book_id=$1 ON CONFLICT DO NOTHING;',
+        VALUES = [
+            request.params.id,
+            request.body.title,
+            request.body.author,
+            request.body.isbn,
+            request.body.image_url,
+            request.body.description
+        ],
+        function(err) {
+            if(err) console.error(err);
+            response.send('New book inserted');
+        }
+    );
+});
 
 // =========================================
 
