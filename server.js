@@ -20,7 +20,9 @@ client.on('error', err => console.log(err));
 // Application middleware
 app.use(cors());
 
-// ============= API endpoints =============
+// +++++++++++++ API endpoints +++++++++++++
+
+// ================ GETS ===================
 
 // Fetch all books
 app.get('/api/v1/books', (req, res) => {
@@ -50,8 +52,13 @@ app.get('/api/v1/books/:id', (req, res) => {
         `;
     let values = [request.body.book_id];
     client.query(SQL, values)
-    .then()
-})
+    .then(results => res.send(results.rows))
+    .catch(console.error);
+});
+
+// ================ POSTS ==================
+
+
 
 // =========================================
 
