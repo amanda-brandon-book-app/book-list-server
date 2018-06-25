@@ -33,17 +33,6 @@ app.get('/api/v1/books', (req, res) => {
     .catch(console.error);
 });
 
-// Fetch books w/o description (slim version)
-app.get('/api/v1/books-slim', (req, res) => {
-    console.log('New slimmed GET request')
-    let SQL = `
-        SELECT book_id, title, author, image_url FROM books;
-        `;
-    client.query(SQL)
-    .then(results => res.send(results.rows))
-    .catch(console.error);
-});
-
 // Fetch single book
 app.get('/api/v1/books/:id', (req, res) => {
     console.log('New GET request for single object')
@@ -58,21 +47,47 @@ app.get('/api/v1/books/:id', (req, res) => {
 // ================ POSTS ==================
 
 app.post('/api/v1/books', function(req, res) {
-    client.query(
-        'INSERT INTO books(title, author, isbn, image_url, description)VALUES($2, $3, $4, $5, $6) WHERE book_id=$1 ON CONFLICT DO NOTHING;',
-        VALUES = [
-            request.params.id,
-            request.body.title,
-            request.body.author,
-            request.body.isbn,
-            request.body.image_url,
-            request.body.description
-        ],
-        function(err) {
-            if(err) console.error(err);
-            response.send('New book inserted');
-        }
-    );
+    console.log('New post request');
+    let SQL = 'INSERT INTO books(title, author, isbn, image_url, description)VALUES($2, $3, $4, $5, $6) WHERE book_id=$1 ON CONFLICT DO NOTHING;';
+    let values = [
+        req.params.id,
+        req.body.title,
+        req.body.author,
+        req.body.isbn,
+        req.body.image_url,
+        req.body.description
+    ];
+    client.query(SQL, values)
+    .then(res => res.sendStatus(201))
+    .catch(console.error);
+});
+
+// ================ PUTS ==================
+
+app.put('/api/v1/books/:id', (req, res) => {
+    console.log('New put request')
+    let SQL = `UPDATE books SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5 WHERE book_id=$6;`;
+    let values = [
+        req.body.title, 
+        req.body.author, 
+        req.body.isbn, 
+        req.body.image_url, 
+        req.body.description, 
+        req.params.id
+    ];
+    client.query(SQL, values)
+    .then(results => res.send(results.rows))
+    .catch(console.error);
+});
+
+// ============== DELETES ================
+
+app.delete('/api/v1/books/:id', (req, res) => {
+    let SQL = 'DELETE FROM books WHERE book_id=$1;'; 
+    let values = [req.params.id];
+    client.query(SQL, values)
+    .then(results => res.send(results.rows))
+    .catch(console.error);
 });
 
 // =========================================
